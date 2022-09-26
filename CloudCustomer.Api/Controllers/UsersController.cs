@@ -6,16 +6,16 @@ namespace CloudCustomer.Api.Controllers;
 [Route("[controller]")]
 public class UsersController : ControllerBase
 {
-    private readonly ILogger<UsersController> _logger;
+    // private readonly ILogger<UsersController> _logger;
 
-    public UsersController(ILogger<UsersController> logger)
+    public UsersController()
     {
-        _logger = logger;
+        // _logger = logger;
     }
 
     [HttpGet(Name = "GetUsers")]
     public async Task<IActionResult> GetAsync()
     {
-        return null;
+        return Ok("All good");
     }
 }

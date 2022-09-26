@@ -27,4 +27,8 @@
       <Folder Include="Helpers" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\CloudCustomer.Api\CloudCustomer.Api.csproj" />
+    </ItemGroup>
+
 </Project>
