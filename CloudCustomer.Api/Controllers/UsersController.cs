@@ -1,3 +1,4 @@
+using CloudCustomer.Api.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CloudCustomer.Api.Controllers;
@@ -6,11 +7,13 @@ namespace CloudCustomer.Api.Controllers;
 [Route("[controller]")]
 public class UsersController : ControllerBase
 {
-    // private readonly ILogger<UsersController> _logger;
+    private readonly IUsersService? _usersService;
 
-    public UsersController()
+    public UsersController() {}
+    
+    public UsersController(IUsersService? usersService)
     {
-        // _logger = logger;
+        _usersService = usersService;
     }
 
     [HttpGet(Name = "GetUsers")]
