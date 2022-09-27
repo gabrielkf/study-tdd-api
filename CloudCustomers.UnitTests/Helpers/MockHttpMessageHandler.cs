@@ -6,6 +6,7 @@ using System.Net.Http.Headers;
 using System.Net.Mime;
 using System.Threading;
 using System.Threading.Tasks;
+using CloudCustomer.Api.Models;
 using Moq;
 using Moq.Protected;
 using Newtonsoft.Json;
@@ -24,7 +25,7 @@ internal static class MockHttpMessageHandler<T>
 
         var handlerMock = new Mock<HttpMessageHandler>();
         handlerMock.Protected().Setup<Task<HttpResponseMessage>>(
-                Constants.SendAsyncMethodName,
+                Constants.SendAsyncMethod,
                 ItExpr.IsAny<HttpRequestMessage>(),
                 ItExpr.IsAny<CancellationToken>())
             .ReturnsAsync(mockResponse);
@@ -42,8 +43,31 @@ internal static class MockHttpMessageHandler<T>
 
         var handlerMock = new Mock<HttpMessageHandler>();
         handlerMock.Protected().Setup<Task<HttpResponseMessage>>(
-                Constants.SendAsyncMethodName,
+                Constants.SendAsyncMethod,
                 ItExpr.IsAny<HttpRequestMessage>(),
+                ItExpr.IsAny<CancellationToken>())
+            .ReturnsAsync(mockResponse);
+
+        return handlerMock;
+    }
+
+    public static Mock<HttpMessageHandler> SetupBasicGetResourceList(List<T> expectedResponse, string endpoint)
+    {
+        var mockResponse = new HttpResponseMessage(HttpStatusCode.OK)
+        {
+            Content = new StringContent(JsonConvert.SerializeObject((expectedResponse)))
+        };
+        mockResponse.Content.Headers.ContentType = new MediaTypeHeaderValue(MediaTypeNames.Application.Json);
+
+        var httpRequestMessage = new HttpRequestMessage()
+        {
+            RequestUri = new Uri(endpoint),
+            Method = HttpMethod.Get
+        };
+        var handlerMock = new Mock<HttpMessageHandler>();
+        handlerMock.Protected().Setup<Task<HttpResponseMessage>>(
+                Constants.SendAsyncMethod,
+                httpRequestMessage,
                 ItExpr.IsAny<CancellationToken>())
             .ReturnsAsync(mockResponse);
 

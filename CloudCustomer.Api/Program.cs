@@ -1,8 +1,10 @@
+using CloudCustomer.Api.Models.Config;
 using CloudCustomer.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.Configure<UsersApiOptions>(builder.Configuration.GetSection("UsersApiOptions"));
 builder.Services.AddTransient<IUsersService, UsersService>();
 builder.Services.AddHttpClient<IUsersService, UsersService>();
 
