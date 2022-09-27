@@ -13,11 +13,11 @@ using Xunit;
 
 namespace CloudCustomers.UnitTests.Systems.Controllers;
 
-public class UsersControllerTest
+public class UsersControllerTests
 {
     private readonly Mock<IUsersService> _mockUsersService;
     
-    public UsersControllerTest()
+    public UsersControllerTests()
     {
         _mockUsersService = new Mock<IUsersService>();
         _mockUsersService
