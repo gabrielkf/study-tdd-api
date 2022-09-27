@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using CloudCustomer.Api.Controllers;
 using CloudCustomer.Api.Models;
 using CloudCustomer.Api.Services;
+using CloudCustomers.UnitTests.Fixtures;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -21,21 +22,7 @@ public class UsersControllerTest
         _mockUsersService = new Mock<IUsersService>();
         _mockUsersService
             .Setup(service => service.GetAllUsersAsync())
-            .ReturnsAsync(new List<User>()
-            {
-                new User() 
-                {
-                    Id = 1,
-                    Name = "John Doe",
-                    Email = "john@doe.com",
-                    Address = new Address()
-                    {
-                        City = "London",
-                        Street = "Baker Street",
-                        ZipCode = "12345"
-                    }
-                }
-            });
+            .ReturnsAsync(UsersFixture.GetTestUsers());
     }
     
     [Fact]
