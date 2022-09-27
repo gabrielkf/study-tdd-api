@@ -1,5 +1,6 @@
-using System.Runtime.InteropServices;
+using System.Collections.Generic;
 using CloudCustomer.Api.Controllers;
+using CloudCustomer.Api.Models;
 using CloudCustomer.Api.Services;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
@@ -15,6 +16,9 @@ public class UsersControllerTest
     public UsersControllerTest()
     {
         _mockUsersService = new Mock<IUsersService?>();
+        _mockUsersService
+            .Setup(service => service!.GetAllUsersAsync())
+            .ReturnsAsync(new List<User>());
     }
     
     [Fact]
@@ -29,13 +33,15 @@ public class UsersControllerTest
     }
     
     [Fact]
-    public async void GetAsync_OnSuccess_InvokesUserService()
+    public async void GetAsync_OnSuccess_InvokesUserServiceOnce()
     {
         // Arrange
         var sut = new UsersController(_mockUsersService.Object);
         // Act
-        var result = (OkObjectResult)await sut.GetAsync();
+        var result = await sut.GetAsync();
         // Assert
-        result.StatusCode.Should().Be(200);
+        _mockUsersService.Verify(
+            service => service!.GetAllUsersAsync(),
+            Times.Once());
     }
 }
