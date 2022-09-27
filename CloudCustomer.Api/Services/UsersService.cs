@@ -9,8 +9,6 @@ public interface IUsersService
 
 public class UsersService : IUsersService
 {
-    public UsersService() {}
-    
     public async Task<List<User>> GetAllUsersAsync()
     {
         throw new NotImplementedException();

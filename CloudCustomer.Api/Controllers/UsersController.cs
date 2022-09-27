@@ -18,6 +18,12 @@ public class UsersController : ControllerBase
     public async Task<IActionResult> GetAsync()
     {
         var users = await _usersService.GetAllUsersAsync();
-        return Ok(users);
+
+        if (users.Any())
+        {
+            return Ok(users);
+        }
+
+        return NotFound("No users found");
     }
 }
