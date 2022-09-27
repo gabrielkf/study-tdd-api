@@ -7,11 +7,9 @@ namespace CloudCustomer.Api.Controllers;
 [Route("[controller]")]
 public class UsersController : ControllerBase
 {
-    private readonly IUsersService? _usersService;
+    private readonly IUsersService _usersService;
 
-    public UsersController() {}
-    
-    public UsersController(IUsersService? usersService)
+    public UsersController(IUsersService usersService)
     {
         _usersService = usersService;
     }
@@ -19,7 +17,7 @@ public class UsersController : ControllerBase
     [HttpGet(Name = "GetUsers")]
     public async Task<IActionResult> GetAsync()
     {
-        var users = await _usersService!.GetAllUsersAsync();
+        var users = await _usersService.GetAllUsersAsync();
         return Ok("Users list");
     }
 }

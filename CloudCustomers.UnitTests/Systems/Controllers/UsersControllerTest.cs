@@ -11,11 +11,11 @@ namespace CloudCustomers.UnitTests.Systems.Controllers;
 
 public class UsersControllerTest
 {
-    private readonly Mock<IUsersService?> _mockUsersService;
+    private readonly Mock<IUsersService> _mockUsersService;
     
     public UsersControllerTest()
     {
-        _mockUsersService = new Mock<IUsersService?>();
+        _mockUsersService = new Mock<IUsersService>();
         _mockUsersService
             .Setup(service => service!.GetAllUsersAsync())
             .ReturnsAsync(new List<User>());
@@ -25,7 +25,7 @@ public class UsersControllerTest
     public async void GetAsync_OnSuccess_ReturnsStatusCode200()
     {
         // Arrange
-        var sut = new UsersController();
+        var sut = new UsersController(_mockUsersService.Object);
         // Act
         var result = (OkObjectResult)await sut.GetAsync();
         // Assert
@@ -41,7 +41,7 @@ public class UsersControllerTest
         var result = await sut.GetAsync();
         // Assert
         _mockUsersService.Verify(
-            service => service!.GetAllUsersAsync(),
+            service => service.GetAllUsersAsync(),
             Times.Once());
     }
 }
