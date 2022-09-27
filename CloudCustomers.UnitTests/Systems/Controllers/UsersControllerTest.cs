@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using CloudCustomer.Api.Controllers;
 using CloudCustomer.Api.Models;
 using CloudCustomer.Api.Services;
@@ -17,31 +18,36 @@ public class UsersControllerTest
     {
         _mockUsersService = new Mock<IUsersService>();
         _mockUsersService
-            .Setup(service => service!.GetAllUsersAsync())
+            .Setup(service => service.GetAllUsersAsync())
             .ReturnsAsync(new List<User>());
     }
     
     [Fact]
     public async void GetAsync_OnSuccess_ReturnsStatusCode200()
     {
-        // Arrange
         var sut = new UsersController(_mockUsersService.Object);
-        // Act
         var result = (OkObjectResult)await sut.GetAsync();
-        // Assert
         result.StatusCode.Should().Be(200);
     }
     
     [Fact]
-    public async void GetAsync_OnSuccess_InvokesUserServiceOnce()
+    public async Task GetAsync_OnSuccess_InvokesUserServiceOnce()
     {
-        // Arrange
         var sut = new UsersController(_mockUsersService.Object);
-        // Act
         var result = await sut.GetAsync();
-        // Assert
         _mockUsersService.Verify(
             service => service.GetAllUsersAsync(),
             Times.Once());
+    }
+
+    [Fact]
+    public async Task Get_OnSuccess_ReturnsListOfUsers()
+    {
+        var sut = new UsersController(_mockUsersService.Object);
+        var result = await sut.GetAsync();
+        var objectResult = (OkObjectResult)result;
+        
+        result.Should().BeOfType<OkObjectResult>();
+        objectResult.Value.Should().BeOfType<List<User>>();
     }
 }

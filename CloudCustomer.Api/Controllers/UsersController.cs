@@ -18,6 +18,6 @@ public class UsersController : ControllerBase
     public async Task<IActionResult> GetAsync()
     {
         var users = await _usersService.GetAllUsersAsync();
-        return Ok("Users list");
+        return Ok(users);
     }
 }
